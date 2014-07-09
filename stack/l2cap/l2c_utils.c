@@ -2270,7 +2270,9 @@ BOOLEAN l2cu_create_conn_after_switch (tL2C_LCB *p_lcb)
 #endif
 
     if (!btsnd_hcic_create_conn (p_lcb->remote_bd_addr,
-                                 HCI_PKT_TYPES_MASK_DM1 + HCI_PKT_TYPES_MASK_DH1,
+                                 ( HCI_PKT_TYPES_MASK_DM1 + HCI_PKT_TYPES_MASK_DH1
+                                 + HCI_PKT_TYPES_MASK_DM3 + HCI_PKT_TYPES_MASK_DH3
+                                 + HCI_PKT_TYPES_MASK_DM5 + HCI_PKT_TYPES_MASK_DH5 ),
                                  page_scan_rep_mode,
                                  page_scan_mode,
                                  clock_offset,
@@ -3286,7 +3288,7 @@ void l2cu_check_channel_congestion (tL2C_CCB *p_ccb)
                 p_ccb->cong_sent = TRUE;
                 if (p_ccb->p_rcb->api.pL2CA_CongestionStatus_Cb)
                 {
-                    L2CAP_TRACE_DEBUG3 ("L2CAP - Calling CongestionStatus_Cb (TRUE),CID:0x%04x,XmitQ:%u,Quota:%u",
+                    L2CAP_TRACE_WARNING3 ("L2CAP - Calling CongestionStatus_Cb (TRUE),CID:0x%04x,XmitQ:%u,Quota:%u",
                         p_ccb->local_cid, q_count, p_ccb->buff_quota);
 
                     (*p_ccb->p_rcb->api.pL2CA_CongestionStatus_Cb)(p_ccb->local_cid, TRUE);
